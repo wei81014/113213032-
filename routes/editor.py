@@ -18,9 +18,9 @@ def editor_list(request: Request, db: sqlite3.Connection = Depends(get_db)):
     ).fetchall()
     
     return templates.TemplateResponse(
-        "editor_list.html",
-        {
-            "request": request,
+        request=request,
+        name="editor_list.html",
+        context={
             "articles": pending_articles,
             "role": "editor",
             "author_name": author_name
@@ -37,9 +37,9 @@ def review_article(request: Request, article_id: int, db: sqlite3.Connection = D
         raise HTTPException(status_code=404, detail="找不到該稿件")
         
     return templates.TemplateResponse(
-        "editor_review.html",
-        {
-            "request": request,
+        request=request,
+        name="editor_review.html",
+        context={
             "article": article,
             "role": "editor",
             "author_name": author_name
