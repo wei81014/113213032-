@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ '編輯稿件' if article else '新增投稿' }}{% endblock %}
+
+{% block content %}
+<h3>{{ '✏️ 編輯稿件' if article else '📝 新增投稿' }}（狀態：編輯中）</h3>
+
+<form action="{{ '/author/edit/' ~ article.id if article else '/author/new' }}" method="post">
+    <div style="margin-bottom: 15px;">
+        <label><strong>類別：</strong></label><br>
+        <select name="category" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            <option value="科技資訊" {% if article and article.category == '科技資訊' %}selected{% endif %}>科技資訊</option>
+            <option value="文學創作" {% if article and article.category == '文學創作' %}selected{% endif %}>文學創作</option>
+            <option value="學術研究" {% if article and article.category == '學術研究' %}selected{% endif %}>學術研究</option>
+            <option value="生活隨筆" {% if article and article.category == '生活隨筆' %}selected{% endif %}>生活隨筆</option>
+        </select>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label><strong>標題：</strong></label><br>
+        <input type="text" name="title" value="{{ article.title if article else '' }}" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label><strong>文章內容：</strong></label><br>
+        <textarea name="content" rows="8" required style="width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;">{{ article.content if article else '' }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">儲存草稿</button>
+    <a href="/author/" class="btn btn-secondary">返回清單</a>
+</form>
+{% endblock %}

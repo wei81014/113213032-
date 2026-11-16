@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}投稿審查系統{% endblock %}</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; max-width: 900px; margin: 30px auto; padding: 0 20px; background: #f8f9fa; }
+        .navbar { background: #2c3e50; color: white; padding: 15px 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .navbar h2 { margin: 0; font-size: 20px; }
+        .role-form { display: flex; gap: 10px; align-items: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #dee2e6; padding: 10px; text-align: left; }
+        th { background: #e9ecef; }
+        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 14px; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-warning { background: #ffc107; color: black; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-editing { background: #fff3cd; color: #856404; }
+        .status-reviewing { background: #cce5ff; color: #004085; }
+        .status-approved { background: #d4edda; color: #155724; }
+        .inline-form { display: inline; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>📝 投稿審查系統</h2>
+        <form action="/switch-role" method="post" class="role-form">
+            <label>角色：</label>
+            <select name="role" onchange="this.form.submit()">
+                <option value="author" {% if role == 'author' %}selected{% endif %}>作者</option>
+                <option value="editor" {% if role == 'editor' %}selected{% endif %}>編輯</option>
+            </select>
+            {% if role == 'author' %}
+            <input type="text" name="author_name" value="{{ author_name }}" placeholder="輸入作者姓名" style="width: 110px;">
+            <button type="submit" class="btn btn-secondary">切換/更新</button>
+            {% else %}
+            <input type="hidden" name="author_name" value="{{ author_name }}">
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="card">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

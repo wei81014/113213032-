@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}作者投稿清單{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3>👤 作者「{{ author_name }}」的投稿稿件清單</h3>
+    <a href="/author/new" class="btn btn-primary">+ 新增投稿</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>類別</th>
+            <th>標題</th>
+            <th>審查狀態</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in articles %}
+        <tr>
+            <td>{{ item.category }}</td>
+            <td>{{ item.title }}</td>
+            <td>
+                {% if item.status == '編輯中' %}
+                    <span class="badge status-editing">編輯中</span>
+                {% elif item.status == '審查中' %}
+                    <span class="badge status-reviewing">審查中</span>
+                {% else %}
+                    <span class="badge status-approved">已通過</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if item.status == '編輯中' %}
+                    <a href="/author/edit/{{ item.id }}" class="btn btn-warning">編輯</a>
+                    <form action="/author/submit/{{ item.id }}" method="post" class="inline-form">
+                        <button type="submit" class="btn btn-success">送出投稿</button>
+                    </form>
+                    <form action="/author/delete/{{ item.id }}" method="post" class="inline-form" onsubmit="return confirm('確定要刪除此草稿嗎？');">
+                        <button type="submit" class="btn btn-danger">刪除</button>
+                    </form>
+                {% else %}
+                    <span style="color: #6c757d; font-size: 13px;">鎖定中（無法修改）</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" style="text-align: center; color: #6c757d;">目前尚無任何投稿紀錄</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

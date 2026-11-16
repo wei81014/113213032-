@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}審查稿件內容{% endblock %}
+
+{% block content %}
+<h3>📄 稿件審查詳情</h3>
+<p><strong>作者：</strong>{{ article.author }}</p>
+<p><strong>類別：</strong>{{ article.category }}</p>
+<p><strong>標題：</strong>{{ article.title }}</p>
+<p><strong>目前狀態：</strong><span class="badge status-reviewing">{{ article.status }}</span></p>
+<hr>
+<div style="background: #f8f9fa; padding: 15px; border-radius: 5px; white-space: pre-wrap; margin-bottom: 20px;">{{ article.content }}</div>
+
+{% if article.status == '審查中' %}
+<form action="/editor/approve/{{ article.id }}" method="post" class="inline-form">
+    <button type="submit" class="btn btn-success">✅ 選擇通過 (審查中 => 已通過)</button>
+</form>
+<form action="/editor/reject/{{ article.id }}" method="post" class="inline-form">
+    <button type="submit" class="btn btn-danger">↩️ 退回稿件 (審查中 => 編輯中)</button>
+</form>
+{% endif %}
+<a href="/editor/" class="btn btn-secondary">返回待審查清單</a>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}編輯待審查清單{% endblock %}
+
+{% block content %}
+<h3>🧐 編輯待審查清單（狀態：審查中）</h3>
+
+<table>
+    <thead>
+        <tr>
+            <th>作者</th>
+            <th>類別</th>
+            <th>標題</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in articles %}
+        <tr>
+            <td>{{ item.author }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.title }}</td>
+            <td>
+                <a href="/editor/review/{{ item.id }}" class="btn btn-primary">查看稿件內容</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" style="text-align: center; color: #6c757d;">目前沒有待審查的稿件</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
