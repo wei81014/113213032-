@@ -19,9 +19,9 @@ def author_list(request: Request, db: sqlite3.Connection = Depends(get_db)):
     ).fetchall()
     
     return templates.TemplateResponse(
-        "author_list.html",
-        {
-            "request": request,
+        request=request,
+        name="author_list.html",
+        context={
             "articles": articles,
             "role": "author",
             "author_name": author_name
@@ -33,9 +33,9 @@ def author_list(request: Request, db: sqlite3.Connection = Depends(get_db)):
 def new_article_form(request: Request):
     author_name = request.session.get("author_name", "王小明")
     return templates.TemplateResponse(
-        "author_form.html",
-        {
-            "request": request,
+        request=request,
+        name="author_form.html",
+        context={
             "article": None,
             "role": "author",
             "author_name": author_name
@@ -69,9 +69,9 @@ def edit_article_form(request: Request, article_id: int, db: sqlite3.Connection 
         raise HTTPException(status_code=400, detail="僅能編輯狀態為「編輯中」的稿件")
         
     return templates.TemplateResponse(
-        "author_form.html",
-        {
-            "request": request,
+        request=request,
+        name="author_form.html",
+        context={
             "article": article,
             "role": "author",
             "author_name": author_name
